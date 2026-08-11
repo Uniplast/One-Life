@@ -1,7 +1,7 @@
 using HarmonyLib;
 using NuclearOption.Networking;
 
-namespace OneLife.src
+namespace OneLife
 {
     /* I was under the mistaken impression that the game would reinitialize the mod
        when the mission ends and/or when a new mission begins. Apparently NOT!! So,

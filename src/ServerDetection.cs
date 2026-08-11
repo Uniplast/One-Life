@@ -1,6 +1,6 @@
 using NuclearOption.Networking;
 
-namespace OneLife.src
+namespace OneLife
 {
     /* Used for detecting if this mod instance is running server-side or client-side. The vast majority
        of the code we want running only server-side or else we get a lot of strange behaviour. Took a while

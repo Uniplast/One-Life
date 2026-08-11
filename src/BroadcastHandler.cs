@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OneLife.src
+namespace OneLife
 {
     /* Periodically broadcasts remaining cooldown times to all players
      via the game's own faction message system, so players can see

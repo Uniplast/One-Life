@@ -3,7 +3,7 @@ using NuclearOption.Chat;
 using NuclearOption.Networking;
 using System;
 
-namespace OneLife.src
+namespace OneLife
 {
     /* Detecting ejections was weird and I still don't think I have it quite right, but this is working for now.
        Uses the OnStartServer() function because this function still runs the PilotDismounted.Setup() function handling

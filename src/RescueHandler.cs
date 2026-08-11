@@ -2,7 +2,7 @@ using HarmonyLib;
 using NuclearOption.Chat;
 using NuclearOption.Networking;
 
-namespace OneLife.src
+namespace OneLife
 {
     /* This runs whenever somebody gets rescued by a friendly unit (AI or player)
        But NOT when they get captured by enemy or if they get "rescued" by a friendly airbase.

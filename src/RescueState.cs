@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using NuclearOption.Networking;
 
-namespace OneLife.src
+namespace OneLife
 { 
     /*RescueState keeps track of all the players who are blocked from spawning for all the different reasone:
       *Waiting for rescuer to RTB and successful sortie

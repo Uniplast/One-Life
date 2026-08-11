@@ -1,7 +1,7 @@
 using HarmonyLib;
 using NuclearOption.Networking;
 
-namespace OneLife.src
+namespace OneLife
 {
     /* Detects when a player gets captured or rescued by an AI.
        Apparently, the game doesn't use different functions for that. It runs the same "Capture" function,

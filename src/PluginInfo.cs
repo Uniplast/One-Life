@@ -1,4 +1,4 @@
-﻿namespace OneLife.src
+﻿namespace OneLife
 {
     public static class PluginInfo
     {

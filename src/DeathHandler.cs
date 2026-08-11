@@ -2,7 +2,7 @@
 using NuclearOption.Networking;
 using System;
 
-namespace OneLife.src
+namespace OneLife
 {
     /* Need to check if a pilot died in the cockpit in a sorta strange way, unless I find a better way later.
        This runs every time a pilot gets damaged while in the cockpit for any reason. So, when a pilot does get damaged while flying,

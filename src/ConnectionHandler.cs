@@ -4,7 +4,7 @@ using NuclearOption.Networking;
 using NuclearOption.Networking.Authentication;
 using System;
 
-namespace OneLife.src
+namespace OneLife
 {
     /* Player objects get created in the "SpawnCharacter" function. This is used to restore cooldown
        of players who disconnected with a cooldown and then reconnected.
