@@ -19,13 +19,24 @@ namespace OneLife
             if (!PlayerHelper.TryGetPlayer<Player>(__0, out Player player) || player == null) return;
 
             if (!PlayerIdentityHelper.TryGetSteamId(player, out ulong steamId)) return;
-            
+
+            /* Registers every player that connects and keeps track of them by their Steam ID. This is
+               to prevent players from being able to be rescued if they disconnect while being rescued
+               and then reconnecting to the server. Before, if they disconnected and reconnected, the player
+               who rescued them could do a sortie, but the player would remain on cooldown. This is because
+               when a player gets disconnected, their 'Player' object gets deallocated and becomes a null reference
+               when the OnSortieSuccessful function fires. So, I'm using another structure to map 'Player' objects
+               to a player's Steam ID, so the mod can still allow players to get rescued even if they disconnect
+               in the middle of it.
+            */
+            RescueState.ConnectedPlayers[steamId] = player;
+
             if (!RescueState.CooldownRemaining.TryGetValue(steamId, out TimeSpan remaining)) return;
 
             RescueState.CooldownRemaining.Remove(steamId);
             bool wasEjected = RescueState.EjectedCooldownRemaining.Remove(steamId);
 
-            if (remaining <= TimeSpan.Zero) return; // already expired while disconnected - nothing to restore
+            if (remaining <= TimeSpan.Zero) return; // Already expired while they were disconnected so there's nothing to do.
 
             DateTime until = DateTime.UtcNow + remaining;
 
@@ -41,8 +52,9 @@ namespace OneLife
         }
     }
 
-    // Used to get unique steam ID of players, so tracking cooldowns is much more reliable than just
-    // using a player-defined username.
+    /* Used to get unique steam ID of players, so tracking cooldowns is much more reliable than just
+       using a player-defined username.
+    */
     internal static class PlayerIdentityHelper
     {
         internal static bool TryGetSteamId(Player player, out ulong steamId)
@@ -67,7 +79,6 @@ namespace OneLife
     [HarmonyPatch(typeof(NetworkManagerNuclearOption), "SpawnCharacter")]
     public static class ConnectMessageBroadcast
     {
-        // TODO: replace with the actual welcome/explainer text.
         private const string WelcomeMessage = $"<color=#FF9822FF>This is One Life Only! Your pilot needs to survive for you to take off in a new aircraft. If you eject, you can be rescued by helis or a brave cricket pilot with no sense of self-preservation.\n• First, they have to land right next to you and pick you up.\n• Next, they need to return to base with you safely to drop you off (successful sortie).\n• And then you should be able to spawn again.</color>";
 
         public static void Postfix(Mirage.INetworkPlayer __0)
@@ -122,6 +133,15 @@ namespace OneLife
             RescueState.AwaitingSortie.Remove(player);
             RescueState.DeathCooldown.Remove(player);
             RescueState.StillFalling.Remove(player);
+
+            /* Remove player from ConnectedPlayers map because they disconnected, so there isn't any
+               'Player' object for them until they reconnect. The SpawnCharacter harmony patch
+                handles reassociating a player's steam id with their 'Player' object.
+            */
+            if (PlayerIdentityHelper.TryGetSteamId(player, out ulong disconnectedSteamId))
+            {
+                RescueState.ConnectedPlayers.Remove(disconnectedSteamId);
+            }
         }
     }
 }

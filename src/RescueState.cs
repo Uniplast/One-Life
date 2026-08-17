@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NuclearOption.Networking;
 
 namespace OneLife
-{ 
+{
     /*RescueState keeps track of all the players who are blocked from spawning for all the different reasone:
       *Waiting for rescuer to RTB and successful sortie
       *Waiting for cooldown to expire
@@ -15,7 +15,7 @@ namespace OneLife
     {
         /* Players blocked from spawning */
         internal static readonly HashSet<Player> Blocked = new HashSet<Player>();
-        
+
         /* Players waiting for their rescuer to do a sortie */
         internal static readonly HashSet<Player> AwaitingSortie = new HashSet<Player>();
 
@@ -47,7 +47,12 @@ namespace OneLife
            they land near enough to a friendly airbase to get rescued immediately from them. We don't want a cooldown
            if that happens, so broadcasting that they're on cooldown while they're still falling can be really misleading.
         */
-
         internal static readonly HashSet<Player> StillFalling = new HashSet<Player>();
+
+        /* Maps a 'Player' object to their Steam ID. Used for keeping track of each player's
+           'Player' object when they connect or disconnect, so the cooldown system can still function
+            correctly when players disconnect or reconnects.
+        */
+        internal static readonly Dictionary<ulong, Player> ConnectedPlayers = new Dictionary<ulong, Player>();
     }
 }

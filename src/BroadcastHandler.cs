@@ -31,7 +31,7 @@ namespace OneLife
             if (entries.Count == 0) return;
 
             string message = $"<color=#FF9822FF>Respawn cooldowns: " + string.Join(", ", entries);
-            message += "</color>";
+            message = string.Concat(message, "</color>");
 
             // Broadcast message to entire server.
             MissionMessages.ShowMessage(message, true, null, true);
@@ -61,10 +61,7 @@ namespace OneLife
                 RescueState.StillFalling.Remove(player);
 
                 //Broadcasts message
-                string msg = wasEjected
-                    ? $"<color=#21FF68FF>{player.GetDisplayName(PlayerNameContext.Other)}'s eject timeout expired - " +
-                      "they can now select a new airframe!</color>"
-                    : $"<color=#21FF68FF>{player.GetDisplayName(PlayerNameContext.Other)} is no longer on cooldown!</color>";
+                string msg = $"<color=#21FF68FF>{player.GetDisplayName(PlayerNameContext.Other)}'s cooldown expired! They can now respawn!</color>";
 
                 MissionMessages.ShowMessage(msg, true, null, true);
                 RescueState.DeathCooldown.Remove(player);

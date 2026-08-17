@@ -24,7 +24,7 @@ namespace OneLife
     public static class EjectionHandler
     {
         
-        private const float StationarySpeedThreshold = 5.0f;
+        private const float StationarySpeedThreshold = 15.0f;
 
         public static void Postfix(PilotDismounted __instance)
         {
@@ -38,7 +38,7 @@ namespace OneLife
                 /* This removes the AI pilot(s) from your plane when you eject. Had an issue where a player ejected (with their AI co-pilot),
                    and somebody rescued their AI pilot and not them by accident lol.
                    Considering this mod REQUIRES you to rescue players to get them back (unless their cooldown times out),
-                   and since there is no visual difference between AI pilots and player pilots, I just decided to incinerate
+                   and since there is no visual difference between AI pilots and player pilots, I just decided to derezz
                    the AI pilot when they all eject from the aircraft.
                 */ 
                 UnityEngine.Object.Destroy(__instance.gameObject); //DIE YOU FUCKING AI PILOT!!
@@ -69,9 +69,7 @@ namespace OneLife
             DateTime timeoutUntil = DateTime.UtcNow.AddMinutes(Plugin.DeathCooldownMinutes);
             RescueState.DeathCooldown[player] = timeoutUntil;
 
-            Plugin.Log.LogInfo($"{player.GetDisplayName(PlayerNameContext.Other)} ejected - " +
-                                $"blocked from selecting a new airframe until rescued, or for up to " +
-                                $"{Plugin.DeathCooldownMinutes} minute(s) if no one gets to them first.");
+            Plugin.Log.LogInfo($"{player.GetDisplayName(PlayerNameContext.Other)} ejected. Blocked from selecting a new airframe until rescued, or for up to {Plugin.DeathCooldownMinutes} minute(s) if no one gets to them first.");
         }
 
         //Checks if player is still on the ground, not moving, within or near a friendly airbase.
@@ -210,7 +208,7 @@ namespace OneLife
             if (chatManager == null) return;
 
             double minutesLeft = (until - DateTime.UtcNow).TotalMinutes;
-            string message = stillEjected ? $"<color=#FF9822FF>You're still waiting to be rescued - you'll be able to respawn in {minutesLeft:0} minute(s) if no one rescues you first.</color>" : $"<color=#FF9822FF>You're still on cooldown. {minutesLeft:0} minute(s) remaining before you can respawn.</color>";
+            string message = stillEjected ? $"<color=#FF9822FF>You're still waiting to be rescued! You'll be able to respawn in {minutesLeft:0} minute(s) if no one rescues you first.</color>" : $"<color=#FF9822FF>You're still on cooldown! {minutesLeft:0} minute(s) remaining before you can respawn.</color>";
 
             chatManager.RpcTargetServerMessage(player.Owner, message, true);
         }

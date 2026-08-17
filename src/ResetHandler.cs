@@ -28,6 +28,14 @@ namespace OneLife
             RescueState.EjectedCooldownRemaining.Clear();
             RescueState.StillFalling.Clear();
 
+            /* Most likely not needed because the ConnectionHandler always grabs a fresh 'Player' object
+               and associates it with the player's Steam ID and also removes the player from the dictionary
+               when they disconnect. Theoretically it should never need to be cleared because it "refreshes"
+               itself whenever a player connects. I added it anyways because I'm a perfectionist and just want
+               to make sure there are no surprises or loose ends.
+            */
+            RescueState.ConnectedPlayers.Clear();
+
             Plugin.Log.LogInfo($"New mission started. RescueState reset. {blockedCount} blocs and {cooldownCount} cooldowns cleared.");
         }
     }

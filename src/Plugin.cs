@@ -14,9 +14,8 @@ namespace OneLife
         //internal static ConfigEntry<bool> AllowFriendlyAIRescue;
         internal static ConfigEntry<float> CooldownBroadcastIntervalMinutes;
 
-        internal static readonly int DeathCooldownMinutes = 25;
+        internal static readonly int DeathCooldownMinutes = 20;
         //internal static readonly int AIRescueCooldownMinutes = 8;
-
         private Harmony harmony;
 
         private void Awake()
@@ -32,14 +31,14 @@ namespace OneLife
                     "How often to broadcast a chat message listing players and their death cooldowns. Nothing is sent if no one is on cooldown. You might need to restart the server if you change this.",
                     new AcceptableValueRange<float>(1f, 10f)));
 
-            /*PreventEnemyCapture = Config.Bind(
+/*            PreventEnemyCapture = Config.Bind(
                 "General", "Prevent Enemy Capture",
                 true,
                 new ConfigDescription(
                     "When enabled, prevents players from getting captured by enemy AI.",
-                    null));*/
+                    null));
 
-            /*AllowFriendlyAIRescue = Config.Bind(
+            AllowFriendlyAIRescue = Config.Bind(
                 "General", "Allow Friendly AI Rescue",
                 true,
                 new ConfigDescription(
@@ -49,7 +48,7 @@ namespace OneLife
             harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll();
 
-            // Broadcast handler functions that need to fire repeatedly.
+            //Broadcast handler functions that need to fire repeatedly.
             float intervalSeconds = CooldownBroadcastIntervalMinutes.Value * 60f;
             InvokeRepeating(nameof(BroadcastCooldowns), intervalSeconds, intervalSeconds);
             InvokeRepeating(nameof(BroadcastFinishedCooldowns), 2, 2);
@@ -74,4 +73,3 @@ namespace OneLife
         }
     }
 }
-
