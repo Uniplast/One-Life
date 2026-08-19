@@ -65,8 +65,26 @@ namespace OneLife
     [HarmonyPatch(typeof(PilotDismounted), "KillPilot")]
     public static class KillPatch
     {
-        public static void Postfix(PilotDismounted __instance)
+        public static bool Prefix(PilotDismounted __instance, out bool __state)
         {
+            __state = true; //Assume a real kill and let the Postfix handle all the exceptions below.
+
+            if (!ServerDetection.IsServer) return true;
+
+            Player player = __instance.Networkplayer;
+            if (player != null && RescueState.Blocked.Contains(player))
+            {
+                __state = false;
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void Postfix(PilotDismounted __instance, bool __state)
+        {
+            if (!__state) return;
+
             if (!ServerDetection.IsServer) return;
 
             Player player = __instance.Networkplayer;

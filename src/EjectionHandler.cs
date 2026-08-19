@@ -89,6 +89,50 @@ namespace OneLife
             return true;
         }
     }
+    
+    // This hopefully makes players invincible after they eject and are waiting for rescue.
+    [HarmonyPatch(typeof(PilotDismounted), "TakeDamage")]
+    public static class EjectedInvincibilityTakeDamagePatch
+    {
+        public static bool Prefix(PilotDismounted __instance)
+        {
+            if (!ServerDetection.IsServer) return true;
+
+            Player player = __instance.Networkplayer;
+            
+            //Don't make AI ejected pilots invincible. There shouldn't be any anyways because I'm derezzing them upon ejecting, but I'll do this just in case.
+            if (player == null) return false;
+
+            //If player is in the "Blocked" dictionary, that means they're ejected and waiting for rescue,
+            //so checking for this and returning false SHOULD hopefully avoid damage to a player after they eject.
+            //Might cause some weird crap, but that's what testing is for lmao.
+            if (RescueState.Blocked.Contains(player)) return false;
+
+            return true;
+        }
+    }
+
+    // This hopefully makes players invincible after they eject and are waiting for rescue.
+    [HarmonyPatch(typeof(PilotDismounted), "ApplyDamage")]
+    public static class EjectedInvincibilityApplyDamagePatch
+    {
+        public static bool Prefix(PilotDismounted __instance)
+        {
+            if (!ServerDetection.IsServer) return true;
+
+            Player player = __instance.Networkplayer;
+
+            //Don't make AI ejected pilots invincible. There shouldn't be any anyways because I'm derezzing them upon ejecting, but I'll do this just in case.
+            if (player == null) return false;
+
+            //If player is in the "Blocked" dictionary, that means they're ejected and waiting for rescue,
+            //so checking for this and returning false SHOULD hopefully avoid damage to a player after they eject.
+            //Might cause some weird crap, but that's what testing is for lmao.
+            if (RescueState.Blocked.Contains(player)) return false;
+
+            return true;
+        }
+    }
 
     /* Need to do this instead of directly patching the CheckLanded() function because its
        data members are private... So this little workaround works because the CheckLanded()

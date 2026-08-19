@@ -115,7 +115,7 @@ namespace OneLife
 
             await Task.Delay(15000);
 
-            string rescueServerMessage = $"<color=#21FF68FF>{rescuedName}</color><color=#FF9822FF> has been picked up by <color=#21FF68FF>{rescuerName}</color>! Go protect them so they can RTB and respawn!</color>";
+            string rescueServerMessage = $"<color=#21FF68FF>{rescuedName}</color><color=#FF9822FF> has been picked up by <color=#21FF68FF>{rescuerName}</color>! <color=#FF9822FF>Go protect them so they can RTB and respawn!</color>";
             MissionMessages.ShowMessage(rescueServerMessage, true, null, true);
         }
 
@@ -124,7 +124,7 @@ namespace OneLife
         {
             //if (player == null) return;
 
-            string msg = $"<color=#21FF68FF>{rescuedName}</color><color=#FF9822FF> has been </color><color=#21FF68FF>rescued</color><color=#FF9822FF> by</color><color=#21FF68FF> {rescuerName}!</color>";
+            string msg = $"<color=#21FF68FF>{rescuedName}</color><color=#FF9822FF> has been </color><color=#21FF68FF>rescued</color><color=#FF9822FF> by</color><color=#FFFFFFFF> {rescuerName}!</color>";
             MissionMessages.ShowMessage(msg, true, null, true);
         }
 
